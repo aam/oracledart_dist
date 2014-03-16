@@ -46,22 +46,19 @@ To Use
    Since Dart native extensions use C++ dart_api interface to integrate into Dart, they won't be necessarily compatible with older version of Dart.
 
 2. This extension requires Oracle Instant Client being present on the machine.
-It is being tested with version instantclient-basic-nt-12.1.0.1.0.
+   It is being tested with version instantclient-basic-nt-12.1.0.1.0 on Windows, instantclient_11_2 on Linux and Mac.
 
-You need to have OCCI binaries in the path for extension to work.
+   You need to have OCCI binaries in the path for extension to work.
 
-Here is how sample path setting might look like on Windows:
-
+   Here is how sample path setting might look like on Windows:
 ```shell
 set path=%userprofile%\downloads\instantclient-basic-nt-12.1.0.1.0\instantclient_12_1\vc11;%userprofile%\downloads\instantclient-basic-nt-12.1.0.1.0\instantclient_12_1;%path%
 ```
-
-on Linux
+   on Linux
 ```shell
 export LD_LIBRARY_PATH=~/Downloads/instantclient_11_2
 ```
-
-or on Mac
+   or on Mac
 ```shell
 export DYLD_LIBRARY_PATH=~/Downloads/instantclient_11_2-2
 ```
