@@ -3,7 +3,7 @@ Bring Oracle to Dart
 
 Goal
 ---
-Allows server-side Dart access Oracle server.
+Allow server-side Dart access Oracle server.
 
 Sample
 ---
