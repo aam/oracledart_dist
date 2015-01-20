@@ -2,21 +2,15 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-part of oracledart;
+library oracledart_native;
 
-abstract class OracleConnection {
-  factory OracleConnection.connect(String username,
-                                   String password,
-                                   String db) {
-    return new _OracleConnection().._connect(username, password, db);
-  }
-  OracleStatement createStatement(String query);
-  OracleResultset select(String query);
-}
+import 'dart:nativewrappers';
+import 'dart-ext:oracledart_native_extension';
+import 'package:oracledart/oracledart.dart';
 
-class _OracleConnection extends NativeFieldWrapperClass1
+class OracleConnectionNative extends NativeFieldWrapperClass1
                         implements OracleConnection {
-  void _connect(String username, String password, String db)
+  void connect(String username, String password, String db)
     native "OracleConnection_Connect";
   void _createStatement(OracleStatement statement, String query)
     native "OracleConnection_CreateStatement";
@@ -34,12 +28,6 @@ class _OracleConnection extends NativeFieldWrapperClass1
   }
 }
 
-abstract class OracleStatement {
-  OracleResultset executeQuery();
-  void setInt(int ndx, int value);
-  void setString(int ndx, String value);
-}
-
 class _OracleStatement extends NativeFieldWrapperClass1
                        implements OracleStatement {
   OracleConnection connection;
@@ -55,43 +43,9 @@ class _OracleStatement extends NativeFieldWrapperClass1
   void setString(int ndx, String value) native "OracleStatement_SetString";
 }
 
-class OracleValue {
-  OracleResultset resultset;
-
-  OracleValue._fromResultset(this.resultset);
-
-  getInt(int index) => resultset.getInt(index);
-  String getString(int index) => resultset.getString(index);
-  getDouble(int index) => resultset.getDouble(index);
-  getFloat(int index) => resultset.getFloat(index);
-}
-
-class OracleIterator implements Iterator<OracleValue> {
-  OracleResultset resultset;
-  OracleIterator._fromResultset(this.resultset);
-
-  bool moveNext() => resultset.next();
-  get current => new OracleValue._fromResultset(resultset);
-}
-
-abstract class OracleResultset extends Object with IterableMixin<OracleValue> {
-  int getInt(int index);
-  String getString(int index);
-  double getDouble(int index);
-  double getFloat(int index);
-  bool next();
-  
-  OracleMetadataVector getColumnListMetadata();
-  
-  int getIntByName(String columnName);
-  String getStringByName(String columnName);
-  double getFloatByName(String columnName);
-  double getDoubleByName(String columnName);
-}
-
 class _OracleResultset extends NativeFieldWrapperClass1
                        implements OracleResultset {
-  OracleIterator get iterator => new OracleIterator._fromResultset(this);
+  OracleIterator get iterator => new OracleIterator.fromResultset(this);
 
   OracleStatement statement;
   _OracleResultset(this.statement);
@@ -137,11 +91,6 @@ class _OracleResultset extends NativeFieldWrapperClass1
   double getDoubleByName(String columnName) {
     return getDouble(getColumnsByName()[columnName]);
   }
-}
-
-abstract class OracleMetadataVector {
-  int getSize();
-  String getColumnName(int index);
 }
 
 class _OracleMetadataVector extends NativeFieldWrapperClass1
